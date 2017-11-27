@@ -1,6 +1,5 @@
 # Eksamens-opgave
 
-
     /*
     Jens Christian Joergensen
     jcja17@student.aau.dk
@@ -67,8 +66,7 @@
         int i = 0;
         int j = 0;
 
-        while (
-            strcmp(loeb[i].nationalitet, "DEN") {
+        while (strcmp(loeb[i].nationalitet, "DEN")) {
 
             j++;
 
@@ -88,31 +86,31 @@
         int points 0;
         for (int i = 0; i < 790; i++)
         {
-            if (placering != "DNF" )
+            if (loeb[i].placering != "DNF" )
             {
                 loeb[i].points += 2;
             }
-            if (placering != "DNF" && placering != "OTL")
+            if (loeb[i].placering != "DNF" && loeb[i].placering != "OTL")
             {
                 /*Grunden til denne del er fordi at man skal lave en udregning som hedder (M-P)/17 og min M er loebsnavn og den er delt op i tre fordi at der findes tre forskellige løb*/
-                if (strcmp(loebsnavn, "ParisRoubaix"))
+                if (strcmp(loeb[i].loebsnavn, "ParisRoubaix"))
                 {
-                    loeb[i].points += ((102 - placering) / 17);
+                    loeb[i].points += ((102 - loeb[i].placering) / 17);
                 }
-                if (strcmp(loebsnavn, "AmstelGoldRace"))
+                if (strcmp(loeb[i].loebsnavn, "AmstelGoldRace"))
                 {
-                    loeb[i].points += ((127 - placering) / 17);
+                    loeb[i].points += ((127 - loeb[i].placering) / 17);
                 }
             }
-            if (placering == 1)
+            if (strcmp(loeb[i].placering, "1"))
             {
                 loeb[i].points += 8;
             }
-            if (placering == 2)
+            if (strcmp(loeb[i].placering, "2"))
             {
                 loeb[i].points += 5;
             }
-            if (placering == 3)
+            if (strcmp(loeb[i].placering, "3"))
             {
                 loeb[i].points += 3;
             }
