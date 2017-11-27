@@ -1,4 +1,4 @@
-# Eksamens-opgve
+# Eksamens-opgave
 
 
     /*
@@ -68,7 +68,7 @@
         int j = 0;
 
         while (
-            loeb[i].nationalitet == "DEN") {
+            strcmp(loeb[i].nationalitet, "DEN") {
 
             j++;
 
