@@ -8,113 +8,115 @@
     Software*/
     #include <stdio.h>
     #include <stdlib.h>
-    #define MAX 300
+    #include <string.h>
+    #define MAX_name 75;
     
-    FILE *fp
-    fp = fopen("cykkelloeb-2017", "r");
     struct cykkelloeb
     {
         char loebsnavn[MAX];
         char rytter_navn[MAX];
-        int rytter_alder[MAX];
+        int rytter_alder;
         char rytter_hold[MAX];
         char nationalitet[MAX];
-        int placering[MAX];
-        double koeretid[MAX];
+        char placering[MAX];
+        double koeretid;
+        int points;
     };
-    fclose(fp);    
-
     typedef struct cykkelloeb cykkelloeb;
 
-    void choices (int * choice);
-    void dk_ryttere_flere_loeb(char * nationalitet, char * rytter_hold, char * rytter_navn);
+    void be_rytter_23(cykkelloeb loeb[790]);
+    void dk_ryttere_flere_loeb(cykkelloeb loeb[790]);
     int cmphold();
+    void ti_bedste_ryttere(cykkelloeb loeb[790]);
     int main(int argc, char const *argv[])
     {
+        cykkelloeb loeb[790];
         printf("Velkomen til UCI's statestik omkring forårsklassikere fra disse fire loeb: Paris Roubaix, Amstell Gold Race, La fleche Wallonne og Liege Alle\n");
 
-         int   i;
+         int   i, choice;
 
    printf("\n  argc = %d\n\n", argc);
 
    for (i = 0; i < argc; ++i)
       printf("   argv[%d] = %s\n", i, argv[i]);
 
-        printf("Vil du se loebsresultaterne fra de belgiske cykelryttere under 23 aar, de danske ryttere som har deltaget i et eller flere af de loeb,
-                de 10 bedste ryttere, hvilken af de fire hold der har flest ryttere med en placering som OTL eller DNF, den bedste nation eller mediantiden af hvert af de foere loeb\n");
-        scanf("%d", &choice);
+        printf("Vil du se loebsresultaterne fra de belgiske cykelryttere under 23 aar, de danske ryttere som har deltaget i et eller flere af de loeb, de 10 bedste ryttere, hvilken af de fire hold der har flest ryttere med en placering som OTL eller DNF, den bedste nation eller mediantiden af hvert af de foere loeb\n");
 
-
+        
         return 0;
     }
 
-    void choices (int * choice) {
-        switch (choice){
-            case 1: {
-                int br_25 = be_rytter_23(*rytter_alder, *nationalitet);
-                printf("De belgiske ryttere har fordelt sig sådan: %i\n", br_25);
-                break;
-            }
-
-            case 2: {
-                char dk_ryt = dk_ryttere_flere_loeb(*rytter_navn, *rytter_hold, *nationalitet);
-                printf("De danske ryttere som har deltaget i et eller flere looes er: %c\n", dk_ryt);
-                break;
-            }
-
-            case 3: {
-                char ti_bedste = ti_bedste_ryttere(*rytter_navn, *placering);
-                printf("De 10 ryttere der har flest points er: %c\n", 10_bedste);
-                break;
-            }
-
-            case 4: {
-                char daeligste = OTL_DNF(*rytter_hohld, *placering);
-                printf("Det hold der har flest ryttere som koerte over OTL er: %c\n", daeligste);
-                printf("Det hold der har flest ryttere som koerte over DNF er: %c\n", daeligste);
-                break;
-            }
-
-            case 5: {
-                char bedste_nation = nation(*nationalitet, *placering);
-                printf("Ud af ale nationerne der har været med har denne gjort det bedst %c\n", bedste_nation);
-                break;
-            }
-
-            case 6: {
-                char mediantid_fra_loeb = mediantid(*loebsnavn, *koeretid);
-                printf("Ud fra de fire cykkelloeb er deres mediantid: %c\n", mediantid_fra_loeb);
-                break;
-            }
-            default: {
-                printf("Findes ikke\n");
-            }
-        }
-    }
-
+    /*Skrevet ind fra cykkelstatestikken til min struct*/
     /*De belgiske ryttere under 23 aar*/
-    void be_rytter_23(int * rytter_alder, char * nationalitet) {
+    void be_rytter_23(cykkelloeb loeb[790]) {
+        int i = 0;
 
-    while (nationalitet == BEL && rytter_alder =< 23) {
-        printf("%c %i\n", nationalitet, rytter_alder);
+    while (strcmp(loeb[i].nationalitet, "BEL") == 0 && loeb[i].rytter_alder < 23) {
+        i++;
+
+        printf("%s %i\n", loeb[i].nationalitet, loeb[i].rytter_alder);
     }
 
-    /*return while (nationalitet == BEL && rytter_alder =< 23);*/
     }
 
     /*De danske ryttere efter holdnavn*/
 
-    void dk_ryttere_flere_loeb(char * nationalitet, char * rytter_hold, char * rytter_navn) {
-        while (nationalitet == DEN) {
-            qsort(rytter_hold, 3, sizeof(int), cmphold)
-            printf("%c %c %c\n", rytter_navn, rytter_hold, nationalitet);
+    void dk_ryttere_flere_loeb(cykkelloeb loeb[790]) {
+
+        cykkelloeb dk_loeb[790];
+        int i = 0;
+        int j = 0;
+
+        while (
+            loeb[i].nationalitet == "DEN") {
+
+            j++;
+
+            dk_loeb[j]=loeb[i];
+            
+            i++;
         }
+        qsort(rytter_hold, 3, sizeof(int), cmphold);
+            printf("%s %s %s\n", rytter_navn, rytter_hold, nationalitet);
     }
 
     int cmphold() {
         strcmp(hold1, hold2);
     }
 
-    void ti_bedste_ryttere(char * rytter_navn, int *placering) {
+    void ti_bedste_ryttere(cykkelloeb loeb[790]) {
+        int points 0;
+        for (int i = 0; i < 790; i++)
+        {
+            if (placering != "DNF" )
+            {
+                loeb[i].points += 2;
+            }
+            if (placering != "DNF" && placering != "OTL")
+            {
+                /*Grunden til denne del er fordi at man skal lave en udregning som hedder (M-P)/17 og min M er loebsnavn og den er delt op i tre fordi at der findes tre forskellige løb*/
+                if (strcmp(loebsnavn, "ParisRoubaix"))
+                {
+                    loeb[i].points += ((102 - placering) / 17);
+                }
+                if (strcmp(loebsnavn, "AmstelGoldRace"))
+                {
+                    loeb[i].points += ((127 - placering) / 17);
+                }
+            }
+            if (placering == 1)
+            {
+                loeb[i].points += 8;
+            }
+            if (placering == 2)
+            {
+                loeb[i].points += 5;
+            }
+            if (placering == 3)
+            {
+                loeb[i].points += 3;
+            }
+
+        }
         
     }
