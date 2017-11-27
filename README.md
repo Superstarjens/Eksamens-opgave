@@ -1,6 +1,6 @@
 # Eksamens-opgave
 
-    /*
+/*
     Jens Christian Joergensen
     jcja17@student.aau.dk
     A410
@@ -8,31 +8,39 @@
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
-    #define MAX_name 75;
+    #define MAX_REG 75;
+    #define MAX_LOEB 790;
     
     struct cykkelloeb
     {
-        char loebsnavn[MAX];
-        char rytter_navn[MAX];
+        char loebsnavn[MAX_REG];
+        char rytter_navn[MAX_REG];
         int rytter_alder;
-        char rytter_hold[MAX];
-        char nationalitet[MAX];
-        char placering[MAX];
+        char rytter_hold[MAX_REG];
+        char nationalitet[MAX_REG];
+        char placering[MAX_REG];
         double koeretid;
         int points;
     };
     typedef struct cykkelloeb cykkelloeb;
 
-    void be_rytter_23(cykkelloeb loeb[790]);
-    void dk_ryttere_flere_loeb(cykkelloeb loeb[790]);
+    /*mine prototyper*/
+    void laes_til_struct(const char *file_name, cykkelloeb loeb[MAX_LOEB]);
+    void be_rytter_23(cykkelloeb loeb[MAX_LOEB]);
+    void dk_ryttere_flere_loeb(cykkelloeb loeb[MAX_LOEB]);
     int cmphold();
-    void ti_bedste_ryttere(cykkelloeb loeb[790]);
+    void ti_bedste_ryttere(cykkelloeb loeb[MAX_LOEB]);
+    void daarligst (cykkelloeb loeb[MAX_LOEB]);
     int main(int argc, char const *argv[])
     {
-        cykkelloeb loeb[790];
+        /*ligger statestikken ind fra tekst filen over i mit array af structs*/
+        cykkelloeb loeb[MAX_LOEB];
+        laes_til_struct("cykkelloeb-2017.txt", loeb);
+
+
         printf("Velkomen til UCI's statestik omkring forårsklassikere fra disse fire loeb: Paris Roubaix, Amstell Gold Race, La fleche Wallonne og Liege Alle\n");
 
-         int   i, choice;
+         int   i;
 
    printf("\n  argc = %d\n\n", argc);
 
@@ -46,8 +54,22 @@
     }
 
     /*Skrevet ind fra cykkelstatestikken til min struct*/
+
+    void laes_til_struct(const char *file_name, cykkelloeb loeb[MAX_LOEB]) {
+        FILE *fp;
+        char ln[MAX_REG], rn[MAX_REG], rh[MAX_REG], n[MAX_REG], p[MAX_REG];
+        double k;
+        int ra, po;
+        
+        fp = fopen(file_name, "r");
+        while(fscanf(fp, "%s %s %d %s %s %s %lf %d", ln, rn, ra, rh, n, p, k) == 7) {
+
+        }
+        fclose(fp);
+    }
+
     /*De belgiske ryttere under 23 aar*/
-    void be_rytter_23(cykkelloeb loeb[790]) {
+    void be_rytter_23(cykkelloeb loeb[MAX_LOEB]) {
         int i = 0;
 
     while (strcmp(loeb[i].nationalitet, "BEL") == 0 && loeb[i].rytter_alder < 23) {
@@ -60,61 +82,100 @@
 
     /*De danske ryttere efter holdnavn*/
 
-    void dk_ryttere_flere_loeb(cykkelloeb loeb[790]) {
+    void dk_ryttere_flere_loeb(cykkelloeb loeb[MAX_LOEB]) {
 
-        cykkelloeb dk_loeb[790];
+        cykkelloeb dk_loeb[MAX_LOEB];
         int i = 0;
         int j = 0;
 
         while (strcmp(loeb[i].nationalitet, "DEN")) {
-
+            
+            i++;
+            
             j++;
 
             dk_loeb[j]=loeb[i];
             
-            i++;
         }
-        qsort(rytter_hold, 3, sizeof(int), cmphold);
+        qsort(dk_loeb, 3, sizeof(int), cmphold);
             printf("%s %s %s\n", rytter_navn, rytter_hold, nationalitet);
     }
 
     int cmphold() {
-        strcmp(hold1, hold2);
+        strcmp(dk_loeb[j], "BMC");
+        strcmp(dk_loeb[j], "QST");
+        strcmp(dk_loeb[j], "CDT");
+        strcmp(dk_loeb[j], "TFS");
+        strcmp(dk_loeb[j], "SKY");
+        strcmp(dk_loeb[j], "FDJ");
+        strcmp(dk_loeb[j], "LTS");
+        strcmp(dk_loeb[j], "DEN");
+        strcmp(dk_loeb[j], "ORS");
+        strcmp(dk_loeb[j], "COF");
+        strcmp(dk_loeb[j], "WGG");
+        strcmp(dk_loeb[j], "AST");
+        strcmp(dk_loeb[j], "BOH");
     }
 
-    void ti_bedste_ryttere(cykkelloeb loeb[790]) {
-        int points 0;
-        for (int i = 0; i < 790; i++)
+    /*Denne finder de 10 ryttere med flest point*/
+    void ti_bedste_ryttere(cykkelloeb loeb[MAX_LOEB]) {
+    int points 0;
+    for (int i = 0; i < MAX_LOEB; i++)
+    {
+        if (loeb[i].placering != "DNF" )
         {
-            if (loeb[i].placering != "DNF" )
+            loeb[i].points += 2;
+        }
+        if (loeb[i].placering != "DNF" && loeb[i].placering != "OTL")
+        {
+            /*Grunden til denne del er fordi at man skal lave en udregning som hedder (M-P)/17 og min M er loebsnavn og den er delt op i tre fordi at der findes tre forskellige løb*/
+            if (strcmp(loeb[i].loebsnavn, "ParisRoubaix"))
             {
-                loeb[i].points += 2;
+                loeb[i].points += ((102 - loeb[i].placering) / 17);
             }
-            if (loeb[i].placering != "DNF" && loeb[i].placering != "OTL")
+            if (strcmp(loeb[i].loebsnavn, "AmstelGoldRace"))
             {
-                /*Grunden til denne del er fordi at man skal lave en udregning som hedder (M-P)/17 og min M er loebsnavn og den er delt op i tre fordi at der findes tre forskellige løb*/
-                if (strcmp(loeb[i].loebsnavn, "ParisRoubaix"))
-                {
-                    loeb[i].points += ((102 - loeb[i].placering) / 17);
-                }
-                if (strcmp(loeb[i].loebsnavn, "AmstelGoldRace"))
-                {
-                    loeb[i].points += ((127 - loeb[i].placering) / 17);
-                }
-            }
-            if (strcmp(loeb[i].placering, "1"))
-            {
-                loeb[i].points += 8;
-            }
-            if (strcmp(loeb[i].placering, "2"))
-            {
-                loeb[i].points += 5;
-            }
-            if (strcmp(loeb[i].placering, "3"))
-            {
-                loeb[i].points += 3;
+                loeb[i].points += ((127 - loeb[i].placering) / 17);
             }
 
+            if (strcmp(loeb[i].loebsnavn, "LaFlecheWallonne"))
+            {
+                loeb[i].points += ((166 - loeb[i].placering) / 17);
+            }
+            if (strcmp(loeb[i].loebsnavn, "LiegeBastogneLiege"))
+            {
+                loeb[i].points += ((153 - loeb[i].placering) / 17);
+            }
         }
-        
+        if (strcmp(loeb[i].placering, "1"))
+        {
+            loeb[i].points += 8;
+        }
+        if (strcmp(loeb[i].placering, "2"))
+        {
+            loeb[i].points += 5;
+        }
+        if (strcmp(loeb[i].placering, "3"))
+        {
+            loeb[i].points += 3;
+        }
+    }
+    }
+
+  /*Det hold der har flest ryttere med OTL eller DNF*/
+    void daarligst (cykkelloeb loeb[MAX_LOEB]) {
+        int i = 0;
+        int daaOTL = 0;
+        int daaDNF = 0;
+        while (strcmp(loeb[i].rytter_hold, "BMC")) {
+            i++
+            if (strcmp(loeb[i].placering, "OTL"))
+            {
+                daaOTL++;
+            }
+            else if (strcmp(loeb[i].placering, "DNF"))
+            {
+                daaDNF++;
+            }
+        }
     }
