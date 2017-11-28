@@ -1,7 +1,6 @@
 # Eksamens-opgave
 
-/*
-    Jens Christian Joergensen
+    /*Jens Christian Joergensen
     jcja17@student.aau.dk
     A410
     Software*/
@@ -26,11 +25,11 @@
 
     /*mine prototyper*/
     void laes_til_struct(const char *file_name, cykkelloeb loeb[MAX_LOEB]);
-    void be_rytter_23(cykkelloeb loeb[MAX_LOEB]);
-    void dk_ryttere_flere_loeb(cykkelloeb loeb[MAX_LOEB]);
+    char be_rytter_23(cykkelloeb loeb[MAX_LOEB]);
+    char dk_ryttere_flere_loeb(cykkelloeb loeb[MAX_LOEB]);
     int cmphold(const void *ip1, const void *ip2);
-    void ti_bedste_ryttere(cykkelloeb loeb[MAX_LOEB]);
-    void daarligst (cykkelloeb loeb[MAX_LOEB]);
+    char ti_bedste_ryttere(cykkelloeb loeb[MAX_LOEB]);
+    char daarligst (cykkelloeb loeb[MAX_LOEB]);
     
     
     /*min main funktion*/
@@ -41,24 +40,50 @@
         laes_til_struct("cykkelloeb-2017.txt", loeb);
 
 
-        printf("Velkomen til UCI's statestik omkring forårsklassikere fra disse fire loeb: Paris Roubaix, Amstell Gold Race, La fleche Wallonne og Liege Alle\n");
+        printf("Velkomen til UCI's statestik omkring foraarsklassikere fra disse fire loeb: Paris Roubaix, Amstell Gold Race, La fleche Wallonne og Liege Alle\n");
 
          int   i;
 
    printf("\n  argc = %d\n\n", argc);
 
-   for (i = 0; i < argc; ++i){
+   for (i = 0; i < argc; ++i)
+    {
       printf("   argv[%d] = %s\n", i, argv[i]);
     }
-        printf("Vil du se loebsresultaterne fra de belgiske cykelryttere under 23 aar, de danske ryttere som har deltaget i et eller flere af de loeb, de 10 bedste ryttere, hvilken af de fire hold der har flest ryttere med en placering som OTL eller DNF, den bedste nation eller mediantiden af hvert af de foere loeb\n");
+        printf("Vil du se a: loebsresultaterne fra de belgiske cykelryttere under 23 aar, b: de danske ryttere som har deltaget i et eller flere af de loeb, c: de 10 bedste ryttere, d: hvilken af holdene har flest ryttere med en placering som OTL eller DNF i hvert af de fire loeb, e: den bedste nation eller f: mediantiden af hvert af de foere loeb\n");
 
+        scanf("%d", &choice)
         
+        switch(choice)
+        {
+            case 1: {
+                char a = be_rytter_23(cykkelloeb loeb[MAX_LOEB]);
+                printf("De belgiske cykelryttere under 23 aar er %s\n" a);
+                break;
+            }
+            case 2: {
+                char b = dk_ryttere_flere_loeb(cykkelloeb loeb[MAX_LOEB]);
+                printf("De danske ryttere der har vaaret med i et eller flere loeb %s\n", b);
+                break;
+            }
+            case 3: {
+                char c = ti_bedste_ryttere(cykkelloeb leob [MAX_LOEB]);
+                printf("De 10 ryttere der har fået flest points er: %s\n", c);
+                break;
+            }
+            case 4: {
+                char d = daarligst(cykkelloeb loeb[MAX_LOEB]);
+                printf("Det hold der har flest ryttere som enten er OTL eller DNF er %s\n", d);
+                break;
+            }
+        }
         return 0;
-    }
+        }
 
     /*Skrevet ind fra cykkelstatestikken til min struct*/
 
-    void laes_til_struct(const char *file_name, cykkelloeb loeb[MAX_LOEB]) {
+    void laes_til_struct(const char *file_name, cykkelloeb loeb[MAX_LOEB])
+    {
         FILE *fp;
         fp = fopen(file_name, "r");
         for (int i = 0; i < MAX_LOEB; ++i)
@@ -69,21 +94,24 @@
     }
 
     /*De belgiske ryttere under 23 aar*/
-    void be_rytter_23(cykkelloeb loeb[MAX_LOEB]) {
+    char be_rytter_23(cykkelloeb loeb[MAX_LOEB])
+    {
         int i = 0;
 
         for (int i = 0; i < MAX_LOEB; ++i)
         {
             if (strcmp(loeb[i].nationalitet, "BEL") && loeb[i].rytter_alder < 23)
              {
-
-             } 
+                printf("%s %s %d %s %s %s %lf", loeb[i].loebsnavn, loeb[i].rytter_navn, &loeb[i].rytter_alder, loeb[i].rytter_hold, loeb[i].nationalitet, loeb[i].placering, &loeb[i].koeretid);
+             }
         }
+        return printf("%s %s %d %s %s %s %lf", loeb[i].loebsnavn, loeb[i].rytter_navn, &loeb[i].rytter_alder, loeb[i].rytter_hold, loeb[i].nationalitet, loeb[i].placering, &loeb[i].koeretid);
     }
 
     /*De danske ryttere efter holdnavn*/
 
-    void dk_ryttere_flere_loeb(cykkelloeb loeb[MAX_LOEB]) {
+    char dk_ryttere_flere_loeb(cykkelloeb loeb[MAX_LOEB])
+    {
 
         cykkelloeb dk_loeb[MAX_LOEB];
         int i = 0;
@@ -99,20 +127,23 @@
              }
         }
         qsort(dk_loeb, 7, sizeof(cykkelloeb), cmphold);
+
+        return dk_loeb;
     }
 
-    int cmphold(const void *ip1, const void *ip2){
-  cykkelloeb *h1 = (cykkelloeb *) ip1,
-         *h2 = (cykkelloeb *) ip2;
+    int cmphold(const void *ip1, const void *ip2)
+    {
+    cykkelloeb *h1 = (cykkelloeb *) ip1,
+               *h2 = (cykkelloeb *) ip2;
 
     return strcmp(h1->rytter_hold, h2->rytter_hold);
     }
     
     /*Denne finder de 10 ryttere med flest point*/
-    void ti_bedste_ryttere(cykkelloeb loeb[MAX_LOEB]) {
-    int points = 0;
-    for (int i = 0; i < MAX_LOEB; i++)
+    char ti_bedste_ryttere(cykkelloeb loeb[MAX_LOEB])
     {
+    int points = 0;
+    for (int i = 0; i < MAX_LOEB; i++) {
         if (atoi(loeb[i].placering) == 0 )
         {
             loeb[i].points += 2;
@@ -151,10 +182,39 @@
             loeb[i].points += 3;
         }
     }
+    qsort(points, 7, sizeof(cykkelloeb), cmppoint);
+
+    return cykkelloeb;
     }
 
-  /*Det hold der har flest ryttere med OTL eller DNF*/
-    void daarligst (cykkelloeb loeb[MAX_LOEB]) {
+    int cmppoint(const void *ip1, const void *ip2)
+    {
+        cykkelloeb *p1 = (cykkelloeb *) ip1,
+                   *p2 = (cykkelloeb *) ip2;
+        if (p1->points > p2->points)
+        {
+            return -1;
+        }
+        else if (p1->points < p2->points)
+        {
+            return 1;
+        }
+
+        if (p1->rytter_alder > p2->rytter_alder)
+        {
+            return -1;
+        }
+        else if (p1->rytter_alder < p2->rytter_alder)
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    /*Det hold der har flest ryttere med OTL eller DNF*/
+    char daarligst (cykkelloeb loeb[MAX_LOEB]) {
         int i = 0;
         int daaOTL = 0;
         int daaDNF = 0;
@@ -162,15 +222,15 @@
          {
              if (strcmp(loeb[i].rytter_hold, loeb[i].rytter_hold))
             {
-                 if (strcmp(loeb[i].placering, loeb[i].rytter_hold))
+                 if (strcmp(loeb[i].placering, "OTL"))
             {
                 daaOTL++;
             }
-            else if (strcmp(loeb[i].placering, loeb[i].rytter_hold))
+            else if (strcmp(loeb[i].placering, "DNF"))
             {
                 daaDNF++;
             }
             }
-            
         }
+        return daaOTL, daaDNF;
     }
