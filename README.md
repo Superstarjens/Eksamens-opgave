@@ -160,13 +160,13 @@
         int daaDNF = 0;
         for (int i = 0; i < MAX_LOEB; ++i)
          {
-             if (strcmp(loeb[i].rytter_hold, "BMC"))
+             if (strcmp(loeb[i].rytter_hold, loeb[i].rytter_hold))
             {
-                 if (strcmp(loeb[i].placering, "OTL"))
+                 if (strcmp(loeb[i].placering, loeb[i].rytter_hold))
             {
                 daaOTL++;
             }
-            else if (strcmp(loeb[i].placering, "DNF"))
+            else if (strcmp(loeb[i].placering, loeb[i].rytter_hold))
             {
                 daaDNF++;
             }
