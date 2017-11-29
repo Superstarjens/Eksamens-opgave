@@ -9,6 +9,8 @@
     #include <string.h>
     #define MAX_REG 70
     #define MAX_LOEB 790
+
+/*Alle de gange jeg bruger loeb[i].noget så er det for at slippe for at skulle skrive hver enkelte parameter fra min struct ind som noget sepperat og så referere til det når man laver det i hver funktion så for at slippe for det bruger jeg loeb[i].noget som bare referere til den bestemte ting i min struct og det er en *Kristian Otte har vist og forklaret mig*/
     
     struct cykkelloeb
     {
@@ -35,6 +37,7 @@
     /*min main funktion*/
     int main(int argc, char const *argv[])
     {
+        int choice;
         /*ligger statestikken ind fra tekst filen over i mit array af structs*/
         cykkelloeb loeb[MAX_LOEB];
         laes_til_struct("cykkelloeb-2017.txt", loeb);
@@ -50,37 +53,41 @@
     {
       printf("   argv[%d] = %s\n", i, argv[i]);
     }
-        printf("Vil du se a: loebsresultaterne fra de belgiske cykelryttere under 23 aar, b: de danske ryttere som har deltaget i et eller flere af de loeb, c: de 10 bedste ryttere, d: hvilken af holdene har flest ryttere med en placering som OTL eller DNF i hvert af de fire loeb, e: den bedste nation eller f: mediantiden af hvert af de foere loeb\n");
+        printf("Vil du se a: loebsresultaterne fra de belgiske cykelryttere under 23 aar, b: de danske ryttere som har deltaget i et eller flere af de loeb, c: de 10 bedste ryttere, d: hvilken af holdene har flest ryttere med en placering som OTL eller DNF i hvert af de fire loeb\n");
 
-        scanf("%d", &choice)
+        scanf("%d", &choice);
         
         switch(choice)
         {
             case 1: {
-                char a = be_rytter_23(cykkelloeb loeb[MAX_LOEB]);
-                printf("De belgiske cykelryttere under 23 aar er %s\n" a);
+                char a = be_rytter_23(&loeb[MAX_LOEB]);
+                printf("De belgiske cykelryttere under 23 aar er %c\n", a);
                 break;
             }
             case 2: {
-                char b = dk_ryttere_flere_loeb(cykkelloeb loeb[MAX_LOEB]);
-                printf("De danske ryttere der har vaaret med i et eller flere loeb %s\n", b);
+                char b = dk_ryttere_flere_loeb(&loeb[MAX_LOEB]);
+                printf("De danske ryttere der har vaaret med i et eller flere loeb %c\n", b);
                 break;
             }
             case 3: {
-                char c = ti_bedste_ryttere(cykkelloeb leob [MAX_LOEB]);
-                printf("De 10 ryttere der har fået flest points er: %s\n", c);
+                char c = ti_bedste_ryttere(&loeb [MAX_LOEB]);
+                printf("De 10 ryttere der har fået flest points er: %c\n", c);
                 break;
             }
             case 4: {
-                char d = daarligst(cykkelloeb loeb[MAX_LOEB]);
-                printf("Det hold der har flest ryttere som enten er OTL eller DNF er %s\n", d);
+                char d = daarligst(&loeb[MAX_LOEB]);
+                printf("Det hold der har flest ryttere som enten er OTL eller DNF er %c\n", d);
                 break;
+            }
+            default:
+            {
+                printf("Findes ikke\n");
             }
         }
         return 0;
         }
 
-    /*Skrevet ind fra cykkelstatestikken til min struct*/
+    /*Skrevet ind fra cykkelstatestikken til min struct. Den er taget og lavet om på fra Kurt noermark's sidste gang hvor han lavede et program som skrev de danske regioner ud fra et seperat dokument*/
 
     void laes_til_struct(const char *file_name, cykkelloeb loeb[MAX_LOEB])
     {
@@ -102,10 +109,10 @@
         {
             if (strcmp(loeb[i].nationalitet, "BEL") && loeb[i].rytter_alder < 23)
              {
-                printf("%s %s %d %s %s %s %lf", loeb[i].loebsnavn, loeb[i].rytter_navn, &loeb[i].rytter_alder, loeb[i].rytter_hold, loeb[i].nationalitet, loeb[i].placering, &loeb[i].koeretid);
+                printf("%s %s %d %s %s %s %lf", loeb[i].loebsnavn, loeb[i].rytter_navn, loeb[i].rytter_alder, loeb[i].rytter_hold, loeb[i].nationalitet, loeb[i].placering, loeb[i].koeretid);
              }
         }
-        return printf("%s %s %d %s %s %s %lf", loeb[i].loebsnavn, loeb[i].rytter_navn, &loeb[i].rytter_alder, loeb[i].rytter_hold, loeb[i].nationalitet, loeb[i].placering, &loeb[i].koeretid);
+        return printf("%s %s %d %s %s %s %lf", loeb[i].loebsnavn, loeb[i].rytter_navn, loeb[i].rytter_alder, loeb[i].rytter_hold, loeb[i].nationalitet, loeb[i].placering, loeb[i].koeretid);
     }
 
     /*De danske ryttere efter holdnavn*/
@@ -143,7 +150,9 @@
     char ti_bedste_ryttere(cykkelloeb loeb[MAX_LOEB])
     {
     int points = 0;
-    for (int i = 0; i < MAX_LOEB; i++) {
+    for (int i = 0; i < MAX_LOEB; i++)
+    {
+        /*Jeppe Arnfelt har hjulpet og forklaret mig hvad atoi er og gør så jeg kunne bruge den*/
         if (atoi(loeb[i].placering) == 0 )
         {
             loeb[i].points += 2;
@@ -182,39 +191,13 @@
             loeb[i].points += 3;
         }
     }
-    qsort(points, 7, sizeof(cykkelloeb), cmppoint);
-
-    return cykkelloeb;
+    return points;
     }
+    /*Der staar i opgaven at man skal sortere rytterne efter point, men jeg kan  ikke se det kan være muligt da mit points system er en integer*/
 
-    int cmppoint(const void *ip1, const void *ip2)
-    {
-        cykkelloeb *p1 = (cykkelloeb *) ip1,
-                   *p2 = (cykkelloeb *) ip2;
-        if (p1->points > p2->points)
-        {
-            return -1;
-        }
-        else if (p1->points < p2->points)
-        {
-            return 1;
-        }
-
-        if (p1->rytter_alder > p2->rytter_alder)
-        {
-            return -1;
-        }
-        else if (p1->rytter_alder < p2->rytter_alder)
-        {
-            return 1;
-        }
-        else
-        {
-            return 0;
-        }
-    }
     /*Det hold der har flest ryttere med OTL eller DNF*/
-    char daarligst (cykkelloeb loeb[MAX_LOEB]) {
+    char daarligst (cykkelloeb loeb[MAX_LOEB])
+    {
         int i = 0;
         int daaOTL = 0;
         int daaDNF = 0;
@@ -232,5 +215,5 @@
             }
             }
         }
-        return daaOTL, daaDNF;
+        return daaDNF;
     }
