@@ -10,7 +10,9 @@
     #define MAX_REG 70
     #define MAX_LOEB 790
 
-/*Alle de gange jeg bruger loeb[i].noget så er det for at slippe for at skulle skrive hver enkelte parameter fra min struct ind som noget sepperat og så referere til det når man laver det i hver funktion så for at slippe for det bruger jeg loeb[i].noget som bare referere til den bestemte ting i min struct og det er en *Kristian Otte har vist og forklaret mig*/
+    /*Alle de gange jeg bruger loeb[i].noget så er det for at slippe for at skulle skrive hver enkelte parameter fra min struct ind som noget sepperat og så referere til det når man laver det i hver funktion så for at slippe for det bruger jeg loeb[i].noget som bare referere til den bestemte ting i min struct og det er en *Kristian Otte har vist og forklaret mig*/
+    /*Mit program kan desværre ikke køre, da det har et problem i min leas_til_struct og hverken jeg eller dem der har kigget på det kan finde problemet desværre for den vil godt kompile, men ikke køre*/
+
     
     struct cykkelloeb
     {
