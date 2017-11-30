@@ -24,6 +24,8 @@
         char placering[MAX_REG];
         double koeretid;
         int points;
+        int *daaOTL;
+        int *daaDNF;
     };
     typedef struct cykkelloeb cykkelloeb;
 
@@ -33,7 +35,7 @@
     char dk_ryttere_flere_loeb(cykkelloeb loeb[MAX_LOEB]);
     int cmphold(const void *ip1, const void *ip2);
     char ti_bedste_ryttere(cykkelloeb loeb[MAX_LOEB]);
-    char daarligst (cykkelloeb loeb[MAX_LOEB]);
+    void daarligst (cykkelloeb loeb[MAX_LOEB]);
     
     
     /*min main funktion*/
@@ -198,7 +200,7 @@
     /*Der staar i opgaven at man skal sortere rytterne efter point, men jeg kan  ikke se det kan være muligt da mit points system er en integer*/
 
     /*Det hold der har flest ryttere med OTL eller DNF*/
-    char daarligst (cykkelloeb loeb[MAX_LOEB])
+    void daarligst (cykkelloeb loeb[MAX_LOEB])
     {
         int i = 0;
         int daaOTL = 0;
@@ -217,5 +219,4 @@
             }
             }
         }
-        return daaDNF;
     }
