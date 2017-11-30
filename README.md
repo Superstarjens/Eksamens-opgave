@@ -24,8 +24,6 @@
         char placering[MAX_REG];
         double koeretid;
         int points;
-        int *daaOTL;
-        int *daaDNF;
     };
     typedef struct cykkelloeb cykkelloeb;
 
@@ -35,7 +33,7 @@
     char dk_ryttere_flere_loeb(cykkelloeb loeb[MAX_LOEB]);
     int cmphold(const void *ip1, const void *ip2);
     char ti_bedste_ryttere(cykkelloeb loeb[MAX_LOEB]);
-    void daarligst (cykkelloeb loeb[MAX_LOEB]);
+    char daarligst (cykkelloeb loeb[MAX_LOEB]);
     
     
     /*min main funktion*/
@@ -60,7 +58,10 @@
         printf("Vil du se a: loebsresultaterne fra de belgiske cykelryttere under 23 aar, b: de danske ryttere som har deltaget i et eller flere af de loeb, c: de 10 bedste ryttere, d: hvilken af holdene har flest ryttere med en placering som OTL eller DNF i hvert af de fire loeb\n");
 
         scanf("%d", &choice);
-        
+
+        for (int i = 0; i < MAX_LOEB; ++i)
+        {
+            
         switch(choice)
         {
             case 1: {
@@ -85,13 +86,15 @@
             }
             default:
             {
-                printf("Findes ikke\n");
+                printf("Cyklen døde: :( \n");
             }
         }
+        }
+        
         return 0;
         }
 
-    /*Skrevet ind fra cykkelstatestikken til min struct. Den er taget og lavet om på fra Kurt noermark's sidste gang hvor han lavede et program som skrev de danske regioner ud fra et seperat dokument*/
+    /*Skrevet ind fra cykkelstatestikken til min struct. Den er taget og lavet om på fra Kurt Noermark's sidste gang hvor han lavede et program som skrev de danske regioner ud fra et seperat dokument*/
 
     void laes_til_struct(const char *file_name, cykkelloeb loeb[MAX_LOEB])
     {
@@ -199,8 +202,8 @@
     }
     /*Der staar i opgaven at man skal sortere rytterne efter point, men jeg kan  ikke se det kan være muligt da mit points system er en integer*/
 
-    /*Det hold der har flest ryttere med OTL eller DNF*/
-    void daarligst (cykkelloeb loeb[MAX_LOEB])
+    /*Det hold der har flest ryttere med OTL eller DNF, den kan dog ikke ligge dem sammen med rytter_hold på grund af manglende fejl et sted*/
+    char daarligst (cykkelloeb loeb[MAX_LOEB])
     {
         int i = 0;
         int daaOTL = 0;
@@ -219,4 +222,5 @@
             }
             }
         }
+        return daaDNF;
     }
