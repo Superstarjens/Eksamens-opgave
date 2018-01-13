@@ -99,7 +99,7 @@
     void laes_til_struct(const char *file_name, cykkelloeb loeb[MAX_LOEB])
     {
         FILE *fp;
-        fp = fopen(file_name, "r");
+        fp = fopen(file_name, "r+");
         for (int i = 0; i < MAX_LOEB; ++i)
         {
             fscanf(fp, "%s %s %d %s %s %s %lf", loeb[i].loebsnavn, loeb[i].rytter_navn, &loeb[i].rytter_alder, loeb[i].rytter_hold, loeb[i].nationalitet, loeb[i].placering, &loeb[i].koeretid);
