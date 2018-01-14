@@ -42,7 +42,7 @@
         int choice;
         /*ligger statestikken ind fra tekst filen over i mit array af structs*/
         cykkelloeb loeb[MAX_LOEB];
-        laes_til_struct("cykkelloeb-2017.txt", loeb);
+        laes_til_struct("cykkelloeb_2017.txt", loeb);
 
 
         printf("Velkomen til UCI's statestik omkring foraarsklassikere fra disse fire loeb: Paris Roubaix, Amstell Gold Race, La fleche Wallonne og Liege Alle\n");
@@ -99,7 +99,7 @@
     void laes_til_struct(const char *file_name, cykkelloeb loeb[MAX_LOEB])
     {
         FILE *fp;
-        fp = fopen(file_name, "r+");
+        fp = fopen("cykkelloeb_2017.txt", "r+");
         for (int i = 0; i < MAX_LOEB; ++i)
         {
             fscanf(fp, "%s %s %d %s %s %s %lf", loeb[i].loebsnavn, loeb[i].rytter_navn, &loeb[i].rytter_alder, loeb[i].rytter_hold, loeb[i].nationalitet, loeb[i].placering, &loeb[i].koeretid);
